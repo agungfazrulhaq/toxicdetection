@@ -1,5 +1,5 @@
-# Toxic Comment Detection
-Simple apps to detect if comment is toxic or not
+# Toxic Comment classification
+this is MLops workflow sample for toxic comment classification pipeline with kubeflow
 
 ## References
-- https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge/data
+- Data : https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge/data
