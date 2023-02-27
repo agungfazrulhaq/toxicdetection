@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    labels:
+      app: toxic-app
+    name: toxic-app-svc
+    # namespace: <namespace>
+spec:
+    ports:
+    - port: 8501
+      protocol: TCP
+      targetPort: 8501
+    selector:
+        app: toxic-app
+    type: ClusterIP

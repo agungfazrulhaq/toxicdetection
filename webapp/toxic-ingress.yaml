@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  name: toxic-app-ingress
+  # namespace: researchai
+spec:
+  rules:
+  - host: toxic.epsindo.ai
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: toxic-app-svc
+            port:
+              number: 8501
+#  tls:
+#  - hosts:
+#    - toxic.epsindo.ai
+#    secretName: toxic-app-tls
+

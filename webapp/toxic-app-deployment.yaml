@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toxic-app
+  labels:
+    app: toxic-app
+  # namespace: <namespace>
+spec:
+  selector:
+    matchLabels:
+      app: toxic-app
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: toxic-app
+    spec:
+      containers:
+      - name: toxic-app
+        image: toxic-detection:test-v1
+        ports:
+        - containerPort: 8501

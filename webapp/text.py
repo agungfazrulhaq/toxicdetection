@@ -59,8 +59,15 @@ minio_client.fget_object(minio_bucket, "commentoxic/tokenizer.pickle", "/tmp/tok
 file = open('/tmp/tokenizer.pickle', 'rb')
 tokenizer = pickle.load(file)
 
+
+isvc_url = "http://toxic-detection.researchai.svc.cluster.local/v1/models/toxic-detection:predict"
+
+st.title('Toxic Comment Detection')
+
+txt = st.text_area('Text to analyze')
+
 text = "you dont deserve to live cause you are a mexican and i hope you dead you nigger mexican"
-text_after_stopwords = remove_stopwords(text)
+text_after_stopwords = remove_stopwords(txt)
 text_clean = remove_symbols(text_after_stopwords)
 
 text_sequence = tokenizer.texts_to_sequences([text_clean])
@@ -68,8 +75,6 @@ text_padded = pad_sequences(text_sequence, maxlen=MAXLEN, padding=PADDING, trunc
 
 labels = ['toxic','severe toxic','obscene','a threat','an insult','identity hate']
 KServe = KServeClient()
-
-isvc_url = "http://toxic-detection.researchai.svc.cluster.local/v1/models/toxic-detection:predict"
 
 t = np.array(text_padded)
 print(t.shape)
@@ -84,22 +89,16 @@ r = json.loads(response.text)
 predicted = r['predictions'][0]
 # predicted = model.predict(text_padded)[0]
 
-st.title('Toxic Comment Detection')
-
-txt = st.text_area('Text to analyze', '''
-    It was the best of times, it was the worst of times, it was
-    the age of wisdom, it was the age of foolishness, it was
-    the epoch of belief, it was the epoch of incredulity, it
-    was the season of Light, it was the season of Darkness, it
-    was the spring of hope, it was the winter of despair, (...)
-    ''')
-if st.button('Analyze'):
-    st.write('Why hello there')
-
 KServe = KServeClient()
 
-iter_ = 0
-for lab in labels :
-    if predicted[iter_] > 0.5 :
-        st.write("comment is "+lab+" ("+str(predicted[iter_]*100)+"%)")
-    iter_ += 1
+if st.button('Analyze'):
+    iter_ = 0
+    n_tox = 0
+    for lab in labels :
+        if predicted[iter_] > 0.5 :
+            txt_write = "comment is <b>"+lab+"</b> ("+str(predicted[iter_]*100)+"%)"
+            st.write(f'<p style="color:red;">{txt_write}</p>', unsafe_allow_html=True)
+            n_tox += 1
+        iter_ += 1
+    if n_tox == 0 :
+        st.write(f'<p style="color:green;"> Comment is <b> Safe </b> </p>', unsafe_allow_html=True)
