@@ -9,5 +9,7 @@ This repository contains the code for a machine learning project focused on iden
 - '<b>data</b>': contains data training and test
 - '<b>configs</b>': contains config file (.yaml) to configure access to kubeflow pipeline and model serving
 
+Please note that this project is intended for educational purposes only, and the model may not be suitable for use in production environments without further testing and refinement.
+
 ## References
 - Data : https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge/data
